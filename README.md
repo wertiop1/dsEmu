@@ -4,7 +4,7 @@ Nintendo DS Emulator in WebAssembly!
 
 # Game List
 
-## [New Super Mario Bros](https://coolan127gamer.github.io/DS-Emulator-Web/games/NSMB%20DS)
-## [Super Mario 64 DS](https://coolan127gamer.github.io/DS-Emulator-Web/games/SMDS)
-## [Mario Kart DS](https://coolan127gamer.github.io/DS-Emulator-Web/games/MKDS)
-## [Mario Kart DS](https://coolan127gamer.github.io/DS-Emulator-Web/games/platKaizo)
+## [New Super Mario Bros](games/NSMB%20DS)
+## [Super Mario 64 DS](games/SMDS)
+## [Mario Kart DS](games/MKDS)
+## [Platinum Kaizo](games/platKaizo)
