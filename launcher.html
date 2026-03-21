@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <title>WebDS Emulator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  </head>
+  <body>
+    <div id="msg-layer" hidden="">
+      <p id="msg-text"></p>
+    </div>
+    <DS4WEB-player id="player"></DS4WEB-player>
+    <script src="DS4WEB/DS4WEB.min.js"></script>
+  </body>
+  <script>
+    async function loadROM() {
+      const res = await fetch('rom.zip');
+      const buf = await res.arrayBuffer();
+      const zip = await JSZip.loadAsync(buf);
+
+      const romFile = zip.file('platKaizo4E.nds');
+
+      if (!romFile) throw new Error('ROM not found in zip');
+
+      const romBlob = await romFile.async('blob');
+      const url = URL.createObjectURL(romBlob);
+      document.getElementById("player").loadURL(url);
+    }
+    loadROM();
+
+    setTimeout(() => {
+    const player = document.querySelector('DS4WEB-player');
+    const shadow = player.shadowRoot;
+
+    const style = document.createElement('style');
+    style.textContent = `
+      #player {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      #top, #bottom {
+        height: 40vh;
+        width: calc(40vh * (256 / 192));
+      }
+    `;
+    shadow.appendChild(style);
+  }, 100);
+  </script>
+</html>
