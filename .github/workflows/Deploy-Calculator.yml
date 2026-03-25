@@ -7,10 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: cd /PKCalc && npm install && cd /PKCalc/calc && npm install
+      - name: Install PKCalc dependencies
+        run: cd PKCalc && npm install 
+      - name: Install Showdown Calc Dependencies
+        run: cd PKCalc/calc && npm install
       - name: Build
-        run: cd /PKCalc && node build
+        run: cd PKCalc && node build
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
