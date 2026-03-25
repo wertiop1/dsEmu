@@ -1,0 +1,18 @@
+name: Deploy to Calculator GitHub Pages
+on:
+  push:
+    branches: [main]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: cd /PKCalc && npm install && cd /PKCalc/calc && npm install
+      - name: Build
+        run: cd /PKCalc && node build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./PKCalc/dist
