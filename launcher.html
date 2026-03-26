@@ -1,13 +1,30 @@
 <!doctype html>
 <html>
   <head>
-    <title>WebDS Emulator</title>
+    <title>WebDS Emu</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link rel="stylesheet" href="css/launcher.css">
   </head>
   <body>
     <p hidden="">b9445ce21906f9a6b00fecb79b9ed43a7989113ba846d230c6d6f3c6a905cd3cff77236bf7c4777b33397fa899b5dad61824607252f91375b6b6b90525f91b6c</p>
-  
-    <DS4WEB-player id="player"></DS4WEB-player>
+    <br>
+    <p hidden="">Ddm=$F(8X#AH</p>
+    <p hidden=""></p>
+    <div class="launcher-shell">
+      <header class="launcher-header">
+        <div class="launcher-title">Platinum Kaizo WebDS</div>
+        <div class="launcher-subtitle">Emulator launcher with save management</div>
+      </header>
+      <div class="launcher-toolbar">
+        <button id="export-saves" type="button">Export Saves</button>
+        <button id="import-saves" type="button">Import Saves</button>
+        <input id="import-file" type="file" accept="application/json" hidden>
+        <span id="save-status"></span>
+      </div>
+      <div class="launcher-stage">
+        <DS4WEB-player id="player"></DS4WEB-player>
+      </div>
+    </div>
     <div id="msg-layer" hidden="">
       <p id="msg-text"></p>
     </div>
@@ -28,6 +45,137 @@
       document.getElementById("player").loadURL(url);
     }
     loadROM();
+
+    const saveStatus = document.getElementById('save-status');
+    function setSaveStatus(message) {
+      saveStatus.textContent = message;
+    }
+
+    function arrayBufferToBase64(buffer) {
+      let binary = '';
+      const bytes = new Uint8Array(buffer);
+      const chunkSize = 0x8000;
+      for (let i = 0; i < bytes.length; i += chunkSize) {
+        binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+      }
+      return btoa(binary);
+    }
+
+    function base64ToArrayBuffer(base64) {
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      return bytes.buffer;
+    }
+
+    async function serializeValue(value) {
+      if (value instanceof Blob) {
+        const buf = await value.arrayBuffer();
+        return { __type: 'Blob', mime: value.type || '', data: arrayBufferToBase64(buf) };
+      }
+      if (value instanceof ArrayBuffer) {
+        return { __type: 'ArrayBuffer', data: arrayBufferToBase64(value) };
+      }
+      if (ArrayBuffer.isView(value)) {
+        return {
+          __type: 'TypedArray',
+          ctor: value.constructor.name,
+          data: arrayBufferToBase64(value.buffer)
+        };
+      }
+      return { __type: 'JSON', data: value };
+    }
+
+    async function deserializeValue(payload) {
+      if (!payload || typeof payload !== 'object' || !payload.__type) return payload;
+      if (payload.__type === 'Blob') {
+        const buf = base64ToArrayBuffer(payload.data);
+        return new Blob([buf], { type: payload.mime || 'application/octet-stream' });
+      }
+      if (payload.__type === 'ArrayBuffer') {
+        return base64ToArrayBuffer(payload.data);
+      }
+      if (payload.__type === 'TypedArray') {
+        const buf = base64ToArrayBuffer(payload.data);
+        const Ctor = window[payload.ctor] || Uint8Array;
+        return new Ctor(buf);
+      }
+      if (payload.__type === 'JSON') {
+        return payload.data;
+      }
+      return payload;
+    }
+
+    async function exportSaves() {
+      if (!window.localforage) {
+        setSaveStatus('Export failed: localforage not available.');
+        return;
+      }
+      try {
+        setSaveStatus('Exporting saves...');
+        const keys = await window.localforage.keys();
+        const savKeys = keys.filter((key) => typeof key === 'string' && key.toLowerCase().endsWith('.sav'));
+        const items = [];
+        for (const key of savKeys) {
+          const value = await window.localforage.getItem(key);
+          items.push({ key, value: await serializeValue(value) });
+        }
+        const payload = {
+          version: 1,
+          createdAt: new Date().toISOString(),
+          items
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'platinum-kaizo-saves.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        setSaveStatus(`Exported ${items.length} .sav file(s).`);
+      } catch (err) {
+        setSaveStatus(`Export failed: ${err.message || err}`);
+      }
+    }
+
+    async function importSaves(file) {
+      if (!window.localforage) {
+        setSaveStatus('Import failed: localforage not available.');
+        return;
+      }
+      try {
+        setSaveStatus('Importing saves...');
+        const text = await file.text();
+        const payload = JSON.parse(text);
+        if (!payload || !Array.isArray(payload.items)) {
+          throw new Error('Invalid save file format.');
+        }
+        for (const item of payload.items) {
+          if (!item || typeof item.key !== 'string' || !item.key.toLowerCase().endsWith('.sav')) {
+            continue;
+          }
+          const value = await deserializeValue(item.value);
+          await window.localforage.setItem(item.key, value);
+        }
+        const importedCount = payload.items.filter((item) => item && typeof item.key === 'string' && item.key.toLowerCase().endsWith('.sav')).length;
+        setSaveStatus(`Import complete (${importedCount} .sav file(s)). Reload to apply.`);
+      } catch (err) {
+        setSaveStatus(`Import failed: ${err.message || err}`);
+      }
+    }
+
+    document.getElementById('export-saves').addEventListener('click', exportSaves);
+    const importButton = document.getElementById('import-saves');
+    const importFile = document.getElementById('import-file');
+    importButton.addEventListener('click', () => importFile.click());
+    importFile.addEventListener('change', () => {
+      if (importFile.files && importFile.files[0]) {
+        importSaves(importFile.files[0]);
+      }
+      importFile.value = '';
+    });
 
     setTimeout(() => {
     const player = document.querySelector('DS4WEB-player');

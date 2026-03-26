@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PK Stats</title>
+    <script src="../scripts/csvStatsLookup.js"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/stats.css">
+  </head>
+  <body>
+    <div class="stats-shell">
+      <header class="stats-header">
+        <div class="stats-title">Platinum Kaizo Stats</div>
+        <div class="stats-subtitle">Search the full Pokédex data table</div>
+      </header>
+      <div class="stats-toolbar">
+        <input type="text" id="search" placeholder="Search...">
+        <div class="stats-hint">Tip: search by name, type, ability, or stat.</div>
+      </div>
+      <div class="stats-table-wrap">
+        <table id="csv-table"></table>
+      </div>
+    </div>
+    <script>
+      fetchAndDisplayCSV("csv/Platinum Kaizo Stats.csv")
+    </script>
+  </body>
+</html>
