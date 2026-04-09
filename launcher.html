@@ -7,7 +7,22 @@
   <body>
     <style>
       #toolbar {
-        display: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        background: #f1f1f1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        margin-bottom: 8px;
+      }
+
+      #toolbar button,
+      #toolbar input,
+      #toolbar select,
+      #toolbar label {
+        font-family: inherit;
       }
     </style>
     <div id="toolbar">
@@ -43,6 +58,7 @@
       <span id="save-status" aria-live="polite"></span>
     </div>
     <button id="toggle-ui" type="button" aria-pressed="false">Hide Settings</button>
+    <button id="toggle-toolbar" type="button" aria-pressed="true">Hide Toolbar</button>
     <div id="msg-layer" hidden="">
       <p id="msg-text"></p>
     </div>
@@ -215,6 +231,15 @@
         importSaves(importFile.files[0]);
       }
       importFile.value = '';
+    });
+
+    const toolbarElement = document.getElementById('toolbar');
+    const toolbarToggleBtn = document.getElementById('toggle-toolbar');
+    toolbarToggleBtn.addEventListener('click', () => {
+      const isVisible = toolbarElement.style.display !== 'none';
+      toolbarElement.style.display = isVisible ? 'none' : 'flex';
+      toolbarToggleBtn.textContent = isVisible ? 'Show Toolbar' : 'Hide Toolbar';
+      toolbarToggleBtn.setAttribute('aria-pressed', String(!isVisible));
     });
 
     setTimeout(() => {
