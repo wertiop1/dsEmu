@@ -1,0 +1,1197 @@
+<!doctype html>
+<html data-blank-button>
+  <head>
+    <title>WebDS Emulator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <script defer src="blank-session.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  </head>
+  <body>
+    <div id="toolbar">
+      <button id="export-save" type="button">Export Save (.sav)</button>
+      <button id="import-save" type="button">Import Save (.sav/.dsv)</button>
+      <input id="import-save-file" type="file" accept=".dsv,.sav,application/octet-stream" hidden>
+      <label for="speed-slider" id="speed-label">Speed: <span id="speed-value">1x</span></label>
+      <input id="speed-slider" type="range" min="1" max="4" step="0.1" value="1">
+      <input id="speed-input" type="number" min="1" max="4" step="0.1" value="1" aria-label="Speed multiplier">
+      <label for="frame-skip" id="frame-skip-label">Frame Skip: <span id="frame-skip-value">1</span></label>
+      <input id="frame-skip" type="range" min="0" max="8" step="1" value="1">
+      <label for="render-mode" id="render-mode-label">Render</label>
+      <select id="render-mode" aria-label="Render mode">
+        <option value="light" selected>Light</option>
+        <option value="full">Full</option>
+      </select>
+      <label for="audio-mode" id="audio-mode-label">Audio</label>
+      <select id="audio-mode" aria-label="Audio mode">
+        <option value="light">Light</option>
+        <option value="full">Full</option>
+        <option value="off" selected>Off</option>
+      </select>
+      <label for="autosave-mode" id="autosave-mode-label">Autosave</label>
+      <select id="autosave-mode" aria-label="Autosave mode">
+        <option value="light">Light</option>
+        <option value="normal">Normal</option>
+        <option value="manual" selected>Manual</option>
+      </select>
+      <button id="max-performance" type="button">Max Performance</button>
+      <label id="time-toggle-wrap"><input id="use-custom-time" type="checkbox"> Custom Time</label>
+      <input id="custom-time" type="datetime-local" step="1" disabled>
+      <button id="sync-time" type="button">Use Current Time</button>
+      <span id="save-status" aria-live="polite"></span>
+    </div>
+    <button id="toggle-ui" type="button" aria-pressed="false">Hide Settings</button>
+    <div id="msg-layer" hidden="">
+      <p id="msg-text"></p>
+    </div>
+    <DS4WEB-player id="player"></DS4WEB-player>
+    <div id="mobile-controls" aria-label="Mobile controls">
+      <div class="mobile-controls-row mobile-shoulders">
+        <div class="mobile-control mobile-wide" data-k="l">L</div>
+        <div class="mobile-meta">
+          <div class="mobile-control mobile-pill" data-k="select">Select</div>
+          <div class="mobile-control mobile-pill" data-k="start">Start</div>
+        </div>
+        <div class="mobile-control mobile-wide" data-k="r">R</div>
+      </div>
+      <div class="mobile-controls-row mobile-main">
+        <div class="mobile-dpad" aria-hidden="true">
+          <div class="mobile-control mobile-dpad-up" data-k="up">▲</div>
+          <div class="mobile-control mobile-dpad-left" data-k="left">◀</div>
+          <div class="mobile-control mobile-dpad-right" data-k="right">▶</div>
+          <div class="mobile-control mobile-dpad-down" data-k="down">▼</div>
+        </div>
+        <div class="mobile-actions" aria-hidden="true">
+          <div class="mobile-control mobile-y" data-k="y">Y</div>
+          <div class="mobile-control mobile-x" data-k="x">X</div>
+          <div class="mobile-control mobile-b" data-k="b">B</div>
+          <div class="mobile-control mobile-a" data-k="a">A</div>
+        </div>
+      </div>
+    </div>
+    <div id="cheat-panel">
+      <label for="cheat-input" id="cheat-label">Cheat Codes (one line each)</label>
+      <textarea id="cheat-input" rows="4" placeholder="Example:\n94000130 FCFF0000\nB2101D40 00000000\n00000092 00000063"></textarea>
+      <div id="cheat-actions">
+        <button id="import-save-alt" type="button">Import .sav/.dsv File</button>
+        <button id="apply-cheats" type="button">Apply Cheats</button>
+        <button id="refresh-cheats" type="button">Refresh Cheat List</button>
+      </div>
+      <pre id="cheat-list">No cheats loaded.</pre>
+    </div>
+    <script src="DS4WEB/DS4WEB.js"></script>
+  </body>
+  <script>
+    const exportSaveBtn = document.getElementById('export-save');
+    const importSaveBtn = document.getElementById('import-save');
+    const importSaveAltBtn = document.getElementById('import-save-alt');
+    const importSaveFileInput = document.getElementById('import-save-file');
+    const toggleUiBtn = document.getElementById('toggle-ui');
+    const speedSlider = document.getElementById('speed-slider');
+    const speedInput = document.getElementById('speed-input');
+    const speedValue = document.getElementById('speed-value');
+    const frameSkipSlider = document.getElementById('frame-skip');
+    const frameSkipValue = document.getElementById('frame-skip-value');
+    const renderModeSelect = document.getElementById('render-mode');
+    const audioModeSelect = document.getElementById('audio-mode');
+    const autosaveModeSelect = document.getElementById('autosave-mode');
+    const maxPerformanceBtn = document.getElementById('max-performance');
+    const useCustomTimeCheckbox = document.getElementById('use-custom-time');
+    const customTimeInput = document.getElementById('custom-time');
+    const syncTimeBtn = document.getElementById('sync-time');
+    const cheatInput = document.getElementById('cheat-input');
+    const applyCheatsBtn = document.getElementById('apply-cheats');
+    const refreshCheatsBtn = document.getElementById('refresh-cheats');
+    const cheatList = document.getElementById('cheat-list');
+    const saveStatus = document.getElementById('save-status');
+    const uiVisibilityStorageKey = 'ds-ui-hidden';
+    let currentGameId = '';
+    let customEpochMs = null;
+
+    window.__dsSpeedMultiplier = 1;
+    window.__dsFrameIntervalMs = 16.67;
+    window.__dsTurboBudgetMs = 12;
+    window.__dsFrameSkip = 0;
+    window.__dsRenderMode = 'light';
+    window.__dsAudioMode = 'off';
+    window.__dsAutosaveMode = 'light';
+
+    function formatDateTimeLocal(date) {
+      const pad = (n) => String(n).padStart(2, '0');
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+    }
+
+    window.__dsGetEmuNowMs = function __dsGetEmuNowMs() {
+      if (useCustomTimeCheckbox.checked && Number.isFinite(customEpochMs)) {
+        return customEpochMs + (Date.now() - window.__dsCustomTimeBaseMs);
+      }
+      return Date.now();
+    };
+
+    function setCustomTimeEnabled(enabled) {
+      customTimeInput.disabled = !enabled;
+      if (!enabled) {
+        customEpochMs = null;
+        setSaveStatus('Using real system time.');
+        return;
+      }
+
+      if (!customTimeInput.value) {
+        customTimeInput.value = formatDateTimeLocal(new Date());
+      }
+
+      const parsed = Date.parse(customTimeInput.value);
+      if (Number.isFinite(parsed)) {
+        customEpochMs = parsed;
+        window.__dsCustomTimeBaseMs = Date.now();
+        setSaveStatus('Custom emulator time enabled.');
+      }
+    }
+
+    function setSaveStatus(text) {
+      saveStatus.textContent = text;
+    }
+
+    function setSettingsHidden(hidden, persist = true) {
+      document.body.classList.toggle('ui-collapsed', hidden);
+      toggleUiBtn.setAttribute('aria-pressed', hidden ? 'true' : 'false');
+      toggleUiBtn.textContent = hidden ? 'Show Settings' : 'Hide Settings';
+      toggleUiBtn.title = hidden ? 'Show the header and settings again.' : 'Hide the header and settings.';
+
+      if (persist) {
+        try {
+          window.localStorage.setItem(uiVisibilityStorageKey, hidden ? '1' : '0');
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    }
+
+    function writeCString(text) {
+      const encoded = new TextEncoder().encode(text);
+      const ptr = Module._malloc(encoded.length + 1);
+      Module.HEAPU8.set(encoded, ptr);
+      Module.HEAPU8[ptr + encoded.length] = 0;
+      return ptr;
+    }
+
+    function readCString(ptr) {
+      if (!ptr || !Module || !Module.HEAPU8 || typeof Module._utilStrLen !== 'function') {
+        return '';
+      }
+
+      const len = Module._utilStrLen(ptr);
+      if (!len) {
+        return '';
+      }
+
+      return new TextDecoder().decode(Module.HEAPU8.subarray(ptr, ptr + len));
+    }
+
+    function refreshCheatList() {
+      if (!window.Module || typeof Module._chtGetList !== 'function') {
+        cheatList.textContent = 'Cheat engine not ready yet.';
+        return;
+      }
+
+      try {
+        const listPtr = Module._chtGetList();
+        const listText = readCString(listPtr).trim();
+        cheatList.textContent = listText || 'No cheats loaded.';
+      } catch (err) {
+        console.error(err);
+        cheatList.textContent = 'Failed to read cheat list.';
+      }
+    }
+
+    function addCheatCode(line) {
+      if (typeof Module._chtAddItem !== 'function') {
+        throw new Error('Cheat API not available.');
+      }
+
+      const variants = [line];
+      const compact = line.replace(/\s+/g, '');
+      if (/^[0-9a-fA-F]{16}$/.test(compact)) {
+        variants.push(compact.toUpperCase());
+        variants.push(`${compact.slice(0, 8).toUpperCase()} ${compact.slice(8).toUpperCase()}`);
+      }
+
+      for (const payload of variants) {
+        const ptr = writeCString(payload);
+        try {
+          // Some builds use 1 arg (code string), some use 2 args (code, enabled).
+          try {
+            Module._chtAddItem(ptr);
+          } catch {
+            Module._chtAddItem(ptr, 1);
+          }
+          return;
+        } catch {
+          // Try next variant.
+        } finally {
+          Module._free(ptr);
+        }
+      }
+
+      throw new Error('Cheat line rejected by parser.');
+    }
+
+    function deriveGameId(headerBytes, fallbackName) {
+      let id = '';
+      for (let i = 0; i < 16; i += 1) {
+        const value = headerBytes[i];
+        id += value === 0 ? ' ' : String.fromCharCode(value);
+      }
+
+      if (id[12] === '#') {
+        return fallbackName;
+      }
+
+      return id;
+    }
+
+    function toUint8Array(value) {
+      if (!value) {
+        return null;
+      }
+
+      if (value instanceof Uint8Array) {
+        return value;
+      }
+
+      if (value instanceof ArrayBuffer) {
+        return new Uint8Array(value);
+      }
+
+      if (ArrayBuffer.isView(value)) {
+        return new Uint8Array(value.buffer, value.byteOffset, value.byteLength);
+      }
+
+      return null;
+    }
+
+    function downloadSave(data, filename) {
+      const blob = new Blob([data], { type: 'application/binary' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+
+      link.href = url;
+      link.download = filename;
+      link.click();
+
+      setTimeout(() => URL.revokeObjectURL(url), 0);
+    }
+
+    async function exportSaveFile() {
+      const activeGameId = window.gameID || currentGameId;
+      if (!activeGameId) {
+        setSaveStatus('No ROM loaded yet.');
+        return;
+      }
+
+      setSaveStatus('Preparing save export...');
+
+      let saveData = null;
+
+      if (
+        window.Module &&
+        typeof Module._savGetSize === 'function' &&
+        typeof Module._savGetPointer === 'function' &&
+        Module.HEAPU8
+      ) {
+        const size = Module._savGetSize();
+        if (size > 0) {
+          const ptr = Module._savGetPointer(0);
+          saveData = new Uint8Array(size);
+          saveData.set(Module.HEAPU8.subarray(ptr, ptr + size));
+
+          if (window.localforage && typeof localforage.setItem === 'function') {
+            await localforage.setItem(`sav-${activeGameId}`, saveData);
+          }
+        }
+      }
+
+      if (!saveData && window.localforage && typeof localforage.getItem === 'function') {
+        const stored = await localforage.getItem(`sav-${activeGameId}`);
+        saveData = toUint8Array(stored);
+      }
+
+      if (!saveData || saveData.length === 0) {
+        setSaveStatus('No save data found yet.');
+        return;
+      }
+
+      downloadSave(saveData, `sav-${activeGameId}.sav`);
+      setSaveStatus('Save exported as .sav.');
+    }
+
+    async function importSaveFile(file) {
+      const activeGameId = window.gameID || currentGameId;
+      if (!activeGameId) {
+        setSaveStatus('Load ROM first, then import a .sav or .dsv file.');
+        return;
+      }
+
+      if (!file) {
+        setSaveStatus('No save file selected.');
+        return;
+      }
+
+      if (file.size > 2306867.2) {
+        setSaveStatus('File too large to be a DS save.');
+        return;
+      }
+
+      const data = new Uint8Array(await file.arrayBuffer());
+
+      if (window.localforage && typeof localforage.setItem === 'function') {
+        await localforage.setItem(`sav-${activeGameId}`, data);
+      }
+
+      if (
+        window.Module &&
+        typeof Module._savGetPointer === 'function' &&
+        typeof Module._savUpdateChangeFlag === 'function' &&
+        Module.HEAPU8
+      ) {
+        const ptr = Module._savGetPointer(data.length);
+        Module.HEAPU8.set(data, ptr);
+        Module._savUpdateChangeFlag();
+      }
+
+      setSaveStatus('Save imported. If not reflected, reload the page.');
+    }
+
+    exportSaveBtn.addEventListener('click', () => {
+      exportSaveFile().catch((err) => {
+        console.error(err);
+        setSaveStatus('Save export failed.');
+      });
+    });
+
+    importSaveBtn.addEventListener('click', () => {
+      importSaveFileInput.click();
+    });
+
+    importSaveAltBtn.addEventListener('click', () => {
+      importSaveFileInput.click();
+    });
+
+    importSaveFileInput.addEventListener('change', () => {
+      const [file] = importSaveFileInput.files || [];
+      importSaveFile(file)
+        .catch((err) => {
+          console.error(err);
+          setSaveStatus('Save import failed.');
+        })
+        .finally(() => {
+          importSaveFileInput.value = '';
+        });
+    });
+
+    function normalizeSpeed(value) {
+      const parsed = Number(value);
+      if (!Number.isFinite(parsed)) {
+        return 1;
+      }
+
+      const clamped = Math.max(1, Math.min(4, parsed));
+      return Math.round(clamped * 10) / 10;
+    }
+
+    function updateSpeedControl(multiplier) {
+      const speed = normalizeSpeed(multiplier);
+      window.__dsSpeedMultiplier = speed;
+      speedSlider.value = String(speed);
+      speedInput.value = String(speed);
+      speedValue.textContent = Number.isInteger(speed) ? `${speed}x` : `${speed.toFixed(1)}x`;
+    }
+
+    function normalizeFrameSkip(value) {
+      const parsed = Number(value);
+      if (!Number.isFinite(parsed)) {
+        return 0;
+      }
+
+      return Math.max(0, Math.min(8, Math.round(parsed)));
+    }
+
+    function updateFrameSkipControl(value) {
+      const skip = normalizeFrameSkip(value);
+      window.__dsFrameSkip = skip;
+      frameSkipSlider.value = String(skip);
+      frameSkipValue.textContent = String(skip);
+      setSaveStatus(skip === 0 ? 'Frame skip disabled.' : `Skipping ${skip} frame(s) between renders.`);
+    }
+
+    function updateRenderMode(value) {
+      const mode = value === 'full' ? 'full' : 'light';
+      window.__dsRenderMode = mode;
+      renderModeSelect.value = mode;
+      setSaveStatus(mode === 'full' ? 'Full rendering enabled.' : 'Light rendering enabled.');
+    }
+
+    function updateAudioMode(value) {
+      const mode = value === 'off' ? 'off' : value === 'full' ? 'full' : 'light';
+      window.__dsAudioMode = mode;
+      audioModeSelect.value = mode;
+      if (typeof window.__dsApplyAudioSettings === 'function') {
+        window.__dsApplyAudioSettings();
+      }
+      setSaveStatus(
+        mode === 'off'
+          ? 'Sound disabled.'
+          : mode === 'light'
+            ? 'Light audio enabled.'
+            : 'Full audio enabled.'
+      );
+    }
+
+    function updateAutosaveMode(value) {
+      const mode = value === 'manual' ? 'manual' : value === 'normal' ? 'normal' : 'light';
+      window.__dsAutosaveMode = mode;
+      autosaveModeSelect.value = mode;
+      setSaveStatus(
+        mode === 'manual'
+          ? 'Autosave disabled during play. Export saves manually.'
+          : mode === 'light'
+            ? 'Light autosave enabled.'
+            : 'Normal autosave enabled.'
+      );
+    }
+
+    function applyMaxPerformancePreset(showStatus = true) {
+      updateSpeedControl(1);
+      updateFrameSkipControl(1);
+      updateRenderMode('light');
+      updateAudioMode('off');
+      updateAutosaveMode('manual');
+
+      if (showStatus) {
+        setSaveStatus('Max performance preset enabled.');
+      }
+    }
+
+    speedSlider.addEventListener('input', () => {
+      updateSpeedControl(Number(speedSlider.value));
+    });
+
+    speedInput.addEventListener('input', () => {
+      updateSpeedControl(speedInput.value);
+    });
+
+    speedInput.addEventListener('blur', () => {
+      updateSpeedControl(speedInput.value);
+    });
+
+    frameSkipSlider.addEventListener('input', () => {
+      updateFrameSkipControl(frameSkipSlider.value);
+    });
+
+    renderModeSelect.addEventListener('change', () => {
+      updateRenderMode(renderModeSelect.value);
+    });
+
+    audioModeSelect.addEventListener('change', () => {
+      updateAudioMode(audioModeSelect.value);
+    });
+
+    autosaveModeSelect.addEventListener('change', () => {
+      updateAutosaveMode(autosaveModeSelect.value);
+    });
+
+    maxPerformanceBtn.addEventListener('click', () => {
+      applyMaxPerformancePreset();
+    });
+
+    useCustomTimeCheckbox.addEventListener('change', () => {
+      setCustomTimeEnabled(useCustomTimeCheckbox.checked);
+    });
+
+    customTimeInput.addEventListener('change', () => {
+      const parsed = Date.parse(customTimeInput.value);
+      if (!Number.isFinite(parsed)) {
+        setSaveStatus('Invalid custom time value.');
+        return;
+      }
+
+      customEpochMs = parsed;
+      window.__dsCustomTimeBaseMs = Date.now();
+      setSaveStatus('Custom emulator time updated.');
+    });
+
+    syncTimeBtn.addEventListener('click', () => {
+      useCustomTimeCheckbox.checked = false;
+      setCustomTimeEnabled(false);
+      customTimeInput.value = formatDateTimeLocal(new Date());
+    });
+
+    toggleUiBtn.addEventListener('click', () => {
+      setSettingsHidden(!document.body.classList.contains('ui-collapsed'));
+    });
+
+    applyCheatsBtn.addEventListener('click', () => {
+      if (!window.Module) {
+        setSaveStatus('Emulator not ready for cheats yet.');
+        return;
+      }
+
+      const lines = cheatInput.value
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter((line) => line && !line.startsWith('#') && !line.startsWith('//'));
+
+      if (!lines.length) {
+        setSaveStatus('No cheat codes entered.');
+        return;
+      }
+
+      let applied = 0;
+      const failed = [];
+
+      // Some AR engines expect the whole multi-line cheat as one payload.
+      if (lines.length > 1) {
+        try {
+          addCheatCode(lines.join('\n'));
+          applied = 1;
+          setSaveStatus('Applied cheat block.');
+          refreshCheatList();
+          return;
+        } catch {
+          // Fall back to line-by-line mode.
+        }
+      }
+
+      for (const line of lines) {
+        try {
+          addCheatCode(line);
+          applied += 1;
+        } catch (err) {
+          failed.push(line);
+        }
+      }
+
+      if (failed.length) {
+        setSaveStatus(`Applied ${applied} line(s), failed ${failed.length}. Try a different AR format.`);
+      } else {
+        setSaveStatus(`Applied ${applied} cheat line(s).`);
+      }
+      refreshCheatList();
+    });
+
+    refreshCheatsBtn.addEventListener('click', () => {
+      refreshCheatList();
+    });
+
+    async function loadROM() {
+      const res = await fetch('rom.zip');
+      const buf = await res.arrayBuffer();
+      const zip = await JSZip.loadAsync(buf);
+
+      const romFile = zip.file('platKaizo4E.nds');
+
+      if (!romFile) throw new Error('ROM not found in zip');
+
+      const romBlob = await romFile.async('blob');
+      const romBytes = new Uint8Array(await romBlob.arrayBuffer());
+      currentGameId = deriveGameId(romBytes, 'platKaizo4E.nds');
+
+      const url = URL.createObjectURL(romBlob);
+      document.getElementById("player").loadURL(url);
+
+      setSaveStatus('ROM loaded.');
+    }
+    applyMaxPerformancePreset(false);
+    setSettingsHidden(window.localStorage.getItem(uiVisibilityStorageKey) === '1', false);
+    loadROM();
+    window.__dsCustomTimeBaseMs = Date.now();
+    customTimeInput.value = formatDateTimeLocal(new Date());
+    cheatList.textContent = 'Cheat list is lazy-loaded for performance. Click Refresh Cheat List when needed.';
+
+    setTimeout(() => {
+    const player = document.querySelector('DS4WEB-player');
+    const shadow = player && player.shadowRoot;
+    if (!shadow) {
+      return;
+    }
+
+    const style = document.createElement('style');
+    style.textContent = `
+      #player {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 0 16px;
+        box-sizing: border-box;
+      }
+      #top, #bottom {
+        width: min(calc(100vw - 24px), calc(42vh * (256 / 192)));
+        height: auto;
+        max-height: 42vh;
+        touch-action: none;
+        image-rendering: pixelated;
+      }
+      @media (max-width: 720px) {
+        #player {
+          gap: 6px;
+          padding: 8px 0 10px;
+        }
+        #top, #bottom {
+          width: min(calc(100vw - 16px), calc(28dvh * (256 / 192)));
+          max-height: 28dvh;
+        }
+      }
+      @media (max-width: 520px) {
+        #top, #bottom {
+          width: min(calc(100vw - 12px), calc(24dvh * (256 / 192)));
+          max-height: 24dvh;
+        }
+      }
+    `;
+    shadow.appendChild(style);
+  }, 100);
+  </script>
+  <style>
+    html {
+      background: #1e1e1e;
+      overscroll-behavior: none;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #1e1e1e;
+      color: #f5f5f5;
+      font-family: Verdana, sans-serif;
+      overscroll-behavior: none;
+      touch-action: manipulation;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button,
+    select,
+    input[type="number"],
+    input[type="datetime-local"],
+    textarea {
+      font-size: 16px;
+    }
+
+    input[type="range"] {
+      touch-action: pan-x;
+    }
+
+    DS4WEB-player {
+      display: block;
+      width: 100%;
+      padding: 0 12px 16px;
+    }
+
+    canvas {
+      touch-action: none;
+    }
+
+    #toggle-ui {
+      position: fixed;
+      top: calc(env(safe-area-inset-top, 0px) + 10px);
+      right: 12px;
+      z-index: 35;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      min-height: 44px;
+      background: rgba(12, 12, 12, 0.82);
+      color: #f5f5f5;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+    }
+
+    #toggle-ui:hover {
+      background: rgba(28, 28, 28, 0.9);
+    }
+
+    body.ui-collapsed #toolbar,
+    body.ui-collapsed #cheat-panel {
+      display: none;
+    }
+
+    #toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      background: #2d2d2d;
+      border-bottom: 1px solid #555;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding-top: calc(env(safe-area-inset-top, 0px) + 10px);
+    }
+
+    #export-save {
+      background: #d7b126;
+      color: #111;
+      border: none;
+      padding: 8px 12px;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #export-save:hover {
+      background: #e8c547;
+    }
+
+    #import-save {
+      background: #8eb84a;
+      color: #111;
+      border: none;
+      padding: 8px 12px;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #import-save:hover {
+      background: #a1cb58;
+    }
+
+    #save-status {
+      min-height: 1.2em;
+      font-size: 0.95rem;
+      color: #d7d7d7;
+      flex-basis: 100%;
+    }
+
+    #speed-label {
+      font-weight: 700;
+      color: #f0f0f0;
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
+
+    #frame-skip-label {
+      font-weight: 700;
+      color: #f0f0f0;
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
+
+    #render-mode-label,
+    #audio-mode-label,
+    #autosave-mode-label {
+      font-weight: 700;
+      color: #f0f0f0;
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
+
+    #speed-slider {
+      width: 180px;
+      accent-color: #7ecf6a;
+      cursor: pointer;
+    }
+
+    #frame-skip {
+      width: 140px;
+      accent-color: #d7b126;
+      cursor: pointer;
+    }
+
+    #render-mode,
+    #audio-mode,
+    #autosave-mode {
+      background: #191919;
+      color: #f5f5f5;
+      border: 1px solid #5a5a5a;
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+
+    #max-performance {
+      background: #d74f2a;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #max-performance:hover {
+      background: #e2613f;
+    }
+
+    #speed-input {
+      width: 72px;
+      background: #191919;
+      color: #f5f5f5;
+      border: 1px solid #5a5a5a;
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+
+    #time-toggle-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      color: #f0f0f0;
+      min-height: 44px;
+    }
+
+    #custom-time {
+      background: #191919;
+      color: #f5f5f5;
+      border: 1px solid #5a5a5a;
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+
+    #sync-time {
+      background: #4e6f9a;
+      color: #fff;
+      border: none;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #sync-time:hover {
+      background: #5e84b5;
+    }
+
+    #cheat-panel {
+      margin: 12px;
+      padding: 10px;
+      border: 1px solid #555;
+      border-radius: 8px;
+      background: #262626;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #mobile-controls {
+      display: none;
+      margin: 0 12px 12px;
+      padding: 12px;
+      border: 1px solid #444;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(49, 49, 49, 0.95), rgba(27, 27, 27, 0.98));
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+      gap: 12px;
+    }
+
+    .mobile-controls-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mobile-main {
+      align-items: stretch;
+    }
+
+    .mobile-meta {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .mobile-control {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 52px;
+      min-height: 52px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(180deg, #4a4a4a, #262626);
+      color: #f8f8f8;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 8px 20px rgba(0, 0, 0, 0.2);
+      touch-action: none;
+    }
+
+    .mobile-control.vk-touched {
+      background: linear-gradient(180deg, #7ad45f, #2b6f2c);
+      transform: translateY(1px) scale(0.98);
+    }
+
+    .mobile-wide {
+      min-width: 72px;
+      padding: 0 16px;
+    }
+
+    .mobile-pill {
+      min-width: 88px;
+      min-height: 44px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+    }
+
+    .mobile-dpad,
+    .mobile-actions {
+      position: relative;
+      width: min(42vw, 180px);
+      height: min(42vw, 180px);
+      flex: 0 0 auto;
+    }
+
+    .mobile-dpad .mobile-control,
+    .mobile-actions .mobile-control {
+      position: absolute;
+      width: min(22vw, 76px);
+      height: min(22vw, 76px);
+      border-radius: 22px;
+    }
+
+    .mobile-dpad-up,
+    .mobile-y {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .mobile-dpad-left,
+    .mobile-b {
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .mobile-dpad-right,
+    .mobile-a {
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .mobile-dpad-down,
+    .mobile-x {
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .mobile-a {
+      background: linear-gradient(180deg, #d1743f, #87411f);
+    }
+
+    .mobile-b {
+      background: linear-gradient(180deg, #527fd2, #27457f);
+    }
+
+    .mobile-x {
+      background: linear-gradient(180deg, #68975d, #31512c);
+    }
+
+    .mobile-y {
+      background: linear-gradient(180deg, #b69a43, #6a5a1f);
+    }
+
+    #cheat-label {
+      font-weight: 700;
+      color: #f0f0f0;
+    }
+
+    #cheat-input {
+      width: 100%;
+      max-width: 760px;
+      background: #141414;
+      color: #f5f5f5;
+      border: 1px solid #5a5a5a;
+      border-radius: 6px;
+      padding: 8px;
+      font-family: Consolas, monospace;
+      resize: vertical;
+    }
+
+    #cheat-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    #apply-cheats,
+    #import-save-alt,
+    #refresh-cheats {
+      background: #2f7a4a;
+      color: #fff;
+      border: none;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #refresh-cheats {
+      background: #4a5d7a;
+    }
+
+    #import-save-alt {
+      background: #7e9f3f;
+      color: #111;
+    }
+
+    #apply-cheats:hover {
+      background: #3b8f5a;
+    }
+
+    #refresh-cheats:hover {
+      background: #5a7092;
+    }
+
+    #import-save-alt:hover {
+      background: #93ba49;
+    }
+
+    #cheat-list {
+      margin: 0;
+      max-width: 760px;
+      min-height: 44px;
+      max-height: 200px;
+      overflow: auto;
+      background: #101010;
+      border: 1px solid #444;
+      border-radius: 6px;
+      padding: 8px;
+      color: #d9e5d8;
+      font-family: Consolas, monospace;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+
+      DS4WEB-player {
+        padding: 0 6px 8px;
+      }
+
+      #toolbar {
+        position: static;
+        gap: 8px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        align-items: stretch;
+      }
+
+      #toggle-ui {
+        top: calc(env(safe-area-inset-top, 0px) + 6px);
+        right: 6px;
+        padding: 8px 12px;
+      }
+
+      #toolbar > button,
+      #toolbar > select,
+      #toolbar > input[type="number"],
+      #toolbar > input[type="datetime-local"] {
+        flex: 1 1 calc(50% - 8px);
+        min-height: 44px;
+        min-width: 0;
+      }
+
+      #toolbar > label,
+      #time-toggle-wrap {
+        flex: 1 1 100%;
+      }
+
+      #speed-slider,
+      #frame-skip {
+        width: 100%;
+        flex: 1 1 100%;
+      }
+
+      #save-status {
+        order: 99;
+      }
+
+      #cheat-panel {
+        margin: 10px 8px 12px;
+      }
+
+      #cheat-actions > button {
+        flex: 1 1 100%;
+        min-height: 44px;
+      }
+    }
+
+    @media (pointer: coarse), (max-width: 900px) {
+      #mobile-controls {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 520px) {
+      #mobile-controls {
+        margin: 0 6px 10px;
+        padding: 8px;
+        gap: 8px;
+      }
+
+      .mobile-controls-row {
+        gap: 8px;
+      }
+
+      .mobile-wide {
+        min-width: 52px;
+        min-height: 42px;
+        padding: 0 10px;
+      }
+
+      .mobile-pill {
+        min-width: 68px;
+        min-height: 40px;
+      }
+
+      .mobile-control {
+        min-width: 44px;
+        min-height: 44px;
+        border-radius: 14px;
+      }
+
+      .mobile-dpad,
+      .mobile-actions {
+        width: min(34vw, 140px);
+        height: min(34vw, 140px);
+      }
+
+      .mobile-dpad .mobile-control,
+      .mobile-actions .mobile-control {
+        width: min(18vw, 60px);
+        height: min(18vw, 60px);
+        border-radius: 18px;
+      }
+    }
+  </style>
+</html>
