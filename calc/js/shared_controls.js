@@ -2052,7 +2052,6 @@ $(document).ready(function () {
 
 	var version = localStorage.version;
 	if (version != VERSION) {
-		alert(`Changelog (${VERSION}):\n` + CHANGELOG);
 		localStorage.version = VERSION;
 	}
 

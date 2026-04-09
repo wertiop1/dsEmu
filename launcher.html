@@ -3,9 +3,49 @@
   <head>
     <title>WebDS Emu</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <link rel="stylesheet" href="css/launcher.css">
   </head>
   <body>
+    <style>
+      #toolbar {
+        display: none;
+      }
+    </style>
+    <div id="toolbar">
+      <button id="export-save" type="button">Export Save (.sav)</button>
+      <button id="import-save" type="button">Import Save (.sav/.dsv)</button>
+      <input id="import-save-file" type="file" accept=".dsv,.sav,application/octet-stream" hidden>
+      <label for="speed-slider" id="speed-label">Speed: <span id="speed-value">1x</span></label>
+      <input id="speed-slider" type="range" min="1" max="4" step="0.1" value="1">
+      <input id="speed-input" type="number" min="1" max="4" step="0.1" value="1" aria-label="Speed multiplier">
+      <label for="frame-skip" id="frame-skip-label">Frame Skip: <span id="frame-skip-value">1</span></label>
+      <input id="frame-skip" type="range" min="0" max="8" step="1" value="1">
+      <label for="render-mode" id="render-mode-label">Render</label>
+      <select id="render-mode" aria-label="Render mode">
+        <option value="light" selected>Light</option>
+        <option value="full">Full</option>
+      </select>
+      <label for="audio-mode" id="audio-mode-label">Audio</label>
+      <select id="audio-mode" aria-label="Audio mode">
+        <option value="light">Light</option>
+        <option value="full">Full</option>
+        <option value="off" selected>Off</option>
+      </select>
+      <label for="autosave-mode" id="autosave-mode-label">Autosave</label>
+      <select id="autosave-mode" aria-label="Autosave mode">
+        <option value="light">Light</option>
+        <option value="normal">Normal</option>
+        <option value="manual" selected>Manual</option>
+      </select>
+      <button id="max-performance" type="button">Max Performance</button>
+      <label id="time-toggle-wrap"><input id="use-custom-time" type="checkbox"> Custom Time</label>
+      <input id="custom-time" type="datetime-local" step="1" disabled>
+      <button id="sync-time" type="button">Use Current Time</button>
+      <span id="save-status" aria-live="polite"></span>
+    </div>
+    <button id="toggle-ui" type="button" aria-pressed="false">Hide Settings</button>
+    <div id="msg-layer" hidden="">
+      <p id="msg-text"></p>
+    </div>
     <p hidden="">b9445ce21906f9a6b00fecb79b9ed43a7989113ba846d230c6d6f3c6a905cd3cff77236bf7c4777b33397fa899b5dad61824607252f91375b6b6b90525f91b6c</p>
     <br>
     <p hidden="">Ddm=$F(8X#AH</p>
