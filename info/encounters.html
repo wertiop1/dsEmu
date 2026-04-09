@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PK Encounters</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/encounters.css">
+    <script src="../scripts/csvEncountersLookup.js"></script>
+  </head>
+  <body>
+    <div class="encounters-shell">
+      <header class="encounters-header">
+        <div class="encounters-title">Platinum Kaizo Encounters</div>
+        <div class="encounters-subtitle">General encounter tables by location</div>
+      </header>
+      <div class="encounters-toolbar">
+        <label class="encounters-field">
+          <span>Location</span>
+          <select id="location-select"></select>
+        </label>
+        <label class="encounters-field encounters-search">
+          <span>Search</span>
+          <input type="text" id="encounter-search" placeholder="Search Pokémon, rate, or notes">
+        </label>
+        <div class="encounters-hint">Tip: search for a Pokémon name to highlight where it appears.</div>
+      </div>
+      <div id="encounters-list" class="encounters-list"></div>
+    </div>
+    <script>
+      loadEncounters({
+        encountersCsvPath: "csv/Platinum Kaizo General Encounters.csv",
+        statsCsvPath: "csv/Platinum Kaizo Stats.csv"
+      });
+    </script>
+  </body>
+</html>

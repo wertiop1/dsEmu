@@ -1,0 +1,135 @@
+:root {
+  color-scheme: light;
+  --pk-bg: #e5e5e5;
+  --pk-surface: #f7f7f7;
+  --pk-surface-2: #ffffff;
+  --pk-border: #c6c6c6;
+  --pk-border-strong: #9aa0a6;
+  --pk-text: #2c2c2c;
+  --pk-muted: #666666;
+  --pk-blue: #2b6cb0;
+  --pk-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", Verdana, Arial, sans-serif;
+  background: linear-gradient(180deg, #efefef 0%, #dcdcdc 100%);
+  color: var(--pk-text);
+}
+
+.trainers-shell {
+  max-width: 1100px;
+  margin: 24px auto 40px;
+  padding: 0 16px 24px;
+}
+
+.trainers-header {
+  background: linear-gradient(180deg, #3b7bd6 0%, #2b6cb0 100%);
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 16px 18px 14px;
+  box-shadow: var(--pk-shadow);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.trainers-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.trainers-subtitle {
+  margin-top: 4px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.trainers-toolbar {
+  background: var(--pk-surface);
+  margin-top: 14px;
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid var(--pk-border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--pk-shadow);
+}
+
+.trainers-field {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--pk-muted);
+}
+
+.trainers-field select {
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid var(--pk-border-strong);
+  background: var(--pk-surface-2);
+  font-size: 13px;
+}
+
+.trainers-hint {
+  font-size: 12px;
+  color: var(--pk-muted);
+}
+
+.trainer-map {
+  margin-top: 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.trainer-section {
+  background: var(--pk-surface-2);
+  border-radius: 10px;
+  border: 1px solid var(--pk-border);
+  box-shadow: var(--pk-shadow);
+  overflow: hidden;
+}
+
+.trainer-section-header {
+  background: linear-gradient(180deg, #f7f7f7 0%, #e5e5e5 100%);
+  border-bottom: 1px solid var(--pk-border-strong);
+  padding: 8px 12px;
+  font-weight: 700;
+}
+
+.trainer-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.trainer-table th,
+.trainer-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e2e2e2;
+  text-align: left;
+}
+
+.trainer-table th {
+  background: #fafafa;
+  font-weight: 700;
+}
+
+.trainer-table tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.trainer-table tr:hover {
+  background: #f0f6ff;
+}
+
+.trainer-empty {
+  padding: 16px;
+  color: var(--pk-muted);
+}

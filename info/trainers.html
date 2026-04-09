@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PK Trainer Map</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/trainers.css">
+    <script src="../scripts/trainerMap.js"></script>
+  </head>
+  <body>
+    <div class="trainers-shell">
+      <header class="trainers-header">
+        <div class="trainers-title">Platinum Kaizo Trainer Map</div>
+        <div class="trainers-subtitle">Split-based trainer routing</div>
+      </header>
+      <div class="trainers-toolbar">
+        <label class="trainers-field">
+          <span>Split</span>
+          <select id="split-select"></select>
+        </label>
+        <div class="trainers-hint">
+          Tip: add new splits in <code>info/data/trainer_splits.json</code>.
+        </div>
+      </div>
+      <div id="trainer-map" class="trainer-map"></div>
+    </div>
+    <script>
+      loadTrainerMap("data/trainer_splits.json");
+    </script>
+  </body>
+</html>

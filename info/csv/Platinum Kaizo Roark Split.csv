@@ -1,0 +1,280 @@
+,,,,  PLATINUM KAIZO - ROARK SPLIT,,,,,,,,,,,,
+,,,,AI Flag Key:,,,,,,,,,,,,
+,,,,,Basic,Eval Att,Expert,Status,Risky,Damage Prio,Baton P ass,Tag AI,Check HP,Weather,Harrassment,Left Side AI
+,,,,,,,,,,,,,,,,
+,,,,Route 202,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Youngster Tristan,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 5 Zigzagoon ♂,,Lv 5 Sentret ♂,,Lv 5 Pidgey ♂,,,,,,,,Pokémon
+,,,,Hasty,Gluttony,Docile,Adaptability,Bashful,Tangled Feet,,,,,,,Nature/Abillity
+,AI Flags:,,,Silk Scarf,,Silk Scarf,,Sharp Beak,,,,,,,,Item
+,,,,Quick Attack,,Quick Attack,,Mud Slap,,,,,,,,Moves
+,,,,Sand Attack,,Sand Attack,,Gust,,,,,,,,
+,,,,,,,,Quick Attack,,,,,,,,
+,,,,,,,,Sand Attack,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lass Natalie,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 6 Sunkern ♀,,Lv 6 Starly ♀,,Lv 6 Poochyena ♀,,,,,,,,Pokémon
+,,,,Brave,Solar Power,Hardy,Keen Eye,Naive,Quick Feet,,,,,,,Nature/Abillity
+,AI Flags:,,,Oran Berry,,Oran Berry,,Oran Berry,,,,,,,,Item
+,,,,Toxic,,Quick Attack,,Mud Slap,,,,,,,,Moves
+,,,,Leech Seed,,Roost,,Quick Attack,,,,,,,,
+,,,,Protect,,Peck,,Sleep Talk,,,,,,,,
+,,,,Mega Drain,,Sleep Talk,,Bite,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Bug Catcher Logan,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 6 Weedle ♂,,Lv 6 Caterpie ♂,,Lv 7 Wurmple ♂,,Lv 7 Kricketot ♂,,,,,,Pokémon
+,,,,Bashful,Shield Dust,Serious,Tinted Lens,Rash,Shield Dust,Rash,Shed Skin,,,,,Nature/Abillity
+,AI Flags:,,,(None),,(None),,(None),,(None),,,,,,Item
+,,,,Bug Bite,,Bug Bite,,Bug Bite,,Bug Bite,,,,,,Moves
+,,,,Poison Sting,,Tackle,,Poison Sting,,Mud Slap,,,,,,
+,,,,String Shot,,String Shot,,Tackle,,Snore,,,,,,
+,,,,,,,,String Shot,,Bide,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Jubilife City,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Clown Moe (Right),,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 8 Makuhita ♂,,Lv 10 Happiny ♀,,Lv 9 Togepi ♂,,,,,,,,Pokémon
+,,,,Relaxed,Guts,Bashful,Natural Cure,Naughty,Serene Grace,,,,,,,Nature/Abillity
+,AI Flags:,,,Sitrus Berry,,BrightPowder,,Salac Berry,,,,,,,,Item
+,,,,Fake Out,,Curse,,Softboiled,,,,,,,,Moves
+,,,,Metronome,,Softboiled,,Metronome,,,,,,,,
+,,,,Sleep Talk,,Metronome,,Sleep Talk,,,,,,,,
+,,,,,,Sleep Talk,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Clown Mickey (Middle),,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 8 Pichu ♂,,Lv 8 Smoochum ♀,,Lv 8 Igglybuff ♀,,,,,,,,Pokémon
+,,,,Calm,Static,Naughty,Snow Cloak,Lonely,Cute Charm,,,,,,,Nature/Abillity
+,AI Flags:,,,Berry Juice,,Berry Juice,,Berry Juice,,,,,,,,Item
+,,,,Metronome,,Lovely Kiss,,Sing,,,,,,,,Moves
+,,,,Thunder Wave,,Hail,,Metronome,,,,,,,,
+,,,,,,Metronome,,,,,,,,,,
+,,,,,,Attract,,,,,,,,,,
+,,,, ,,,,,,,,,,,,
+,,,,Clown Ronald (Left),,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 8 Mime Jr. ♀,,Lv 8 Snubbull ♀,,Lv 8 Cleffa ♀,,,,,,,,Pokémon
+,,,,Gentle,Filter,Bashful,Intimidate,Careful,Magic Guard,,,,,,,Nature/Abillity
+,AI Flags:,,,Light Clay,,Razor Claw,,Oran Berry,,,,,,,,Item
+,,,,Fake Out,,Metronome,,Metronome,,,,,,,,Moves
+,,,,Reflect,,Lovely Kiss,,Yawn,,,,,,,,
+,,,,Light Screen,,,,,,,,,,,,
+,,,,Metronome,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Trainer School,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,School Kid Harrison,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 1 Vulpix,,,,,,,,,,,,Pokémon
+,,,,Lonely,Flame Body,,,,,,,,,,,Nature/Abillity
+,AI Flags:,,,(None),,,,,,,,,,,,Item
+,,,,Will-O-Wisp,,,,,,,,,,,,Moves
+,,,,Toxic,,,,,,,,,,,,
+,,,,Hypnosis,,,,,,,,,,,,
+,,,,Thunder Wave,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,School KidfChristine,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 5 Sandshrew,,,,,,,,,,,,Pokémon
+,,,,Naughty,Rough Skin,,,,,,,,,,,Nature/Abillity
+,AI Flags:,,,(None),,,,,,,,,,,,Item
+,,,,Super Fang,,,,,,,,,,,,Moves
+,,,,False Swipe,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Route 204,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lass Samantha,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 7 Shellos -West ♀,,Lv 7 Vulpix ♀,,Lv 7 Budew ♀,,,,,,,,Pokémon
+,,,,Lonely,Dry Skin,Bashful,Flame Body,Mild,Natural Cure,,,,,,,Nature/Abillity
+,AI Flags:,,,Rindo Berry,,Passho Berry,,Occa Berry,,,,,,,,Item
+,,,,Mud Slap,,Ember,,Stun Spore,,,,,,,,Moves
+,,,,Recover,,Confuse Ray,,Mega Drain,,,,,,,,
+,,,,Water Gun,,Quick Attack,,Attract,,,,,,,,
+,,,,Headbutt,,Bite,,Mud Slap,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Youngster Tyler,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 8 Feebas ♂,,Lv 10 Magikarp ♂,,Lv 8 Psyduck ♂,,,,,,,,Pokémon
+,,,,Rash,Swift Swim,Modest,Swift Swim,Modest,Simple,,,,,,,Nature/Abillity
+,AI Flags:,,,Damp Rock,,Focus Sash,,Damp Rock,,,,,,,,Item
+,,,,Hypnosis,,Hydro Pump,,Water Gun,,,,,,,,Moves
+,,,,Rain Dance,,Bounce,,Rain Dance,,,,,,,,
+,,,,Dragon Pulse,,Flail,,Swift,,,,,,,,
+,,,,Muddy Water,,,,Confusion,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lass Sarah,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 8 Shinx ♀,,Lv 8 Skitty ♀,,Lv 7 Meowth ♀,,,,,,,,Pokémon
+,,,,Adamant,Rivalry,Hasty,Cute Charm,Modest,Super Luck,,,,,,,Nature/Abillity
+,AI Flags:,,,(None),,Silk Scarf,,Silk Scarf,,,,,,,,Item
+,,,,Shock Wave,,Fake Out,,Fake Out,,,,,,,,Moves
+,,,,Bite,,Sucker Punch,,Hypnosis,,,,,,,,
+,,,,Fury Swipes,,Attract,,Fury Swipes,,,,,,,,
+,,,,Thunder Wave,,Quick Attack,,Bite,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Route 203,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Barry #2 (Player chose Chimchar),,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 9 Aipom ♂,,Lv 9 Taillow ♂,,Lv 9 Slakoth ♂,,Lv 9 Mankey ♂,,Lv 9 Elekid ♂,,Lv 10 Piplup ♂,,Pokémon
+,,,,Impish,Technician,Jolly,Guts,Jolly,Truant,Hasty,Reckless,Lonely,Static,Rash,Torrent,Nature/Abillity
+,AI Flags:,,,Silk Scarf,,Flame Orb,,Choice Band,,Expert Belt,,Expert Belt,,Berry Juice,,Item
+,,,,Fake Out,,Quick Attack,,Crush Claw,,Karate Chop,,Rolling Kick,,Water Pulse,,Moves
+,,,,U-turn,,Wing Attack,,,,Fury Swipes,,Shock Wave,,Return,,
+,,,,,,Secret Power,,,,U-turn,,Swift,,Pluck,,
+,,,,,,Protect,,,,,,Thunder Wave,,Rock Smash,,
+,,,,,,,,,,,,,,,,
+,,,,Barry #2 (Player chose Piplup),,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 9 Aipom ♂,,Lv 9 Taillow ♂,,Lv 9 Slakoth ♂,,Lv 9 Mankey ♂,,Lv 9 Elekid ♂,,Lv 10 Turtwig ♂,,Pokémon
+,,,,Naive,Technician,Adamant,Guts,Adamant,Truant,Jolly,Reckless,Calm,Static,Quiet,Overgrow,Nature/Abillity
+,AI Flags:,,,Silk Scarf,,Flame Orb,,Choice Band,,Expert Belt,,Expert Belt,,Berry Juice,,Item
+,,,,Fake Out,,Quick Attack,,Crush Claw,,Karate Chop,,Rolling Kick,,Razor Leaf,,Moves
+,,,,U-turn,,Wing Attack,,,,Fury Swipes,,Shock Wave,,Return,,
+,,,,,,Secret Power,,,,U-turn,,Swift,,Bite,,
+,,,,,,Protect,,,,,,Thunder Wave,,Rock Smash,,
+,,,,,,,,,,,,,,,,
+,,,,Barry #2 (Player chose Turtwig),,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 9 Aipom ♂,,Lv 9 Taillow ♂,,Lv 9 Slakoth ♂,,Lv 9 Mankey ♂,,Lv 9 Elekid ♂,,Lv 10 Chimchar ♂,,Pokémon
+,,,,Naive,Technician,Jolly,Guts,Adamant,Truant,Hasty,Reckless,Naive,Static,Gentle,Blaze,Nature/Abillity
+,AI Flags:,,,Silk Scarf,,Flame Orb,,Choice Band,,Expert Belt,,Expert Belt,,Berry Juice,,Item
+,,,,Fake Out,,Quick Attack,,Crush Claw,,Karate Chop,,Rolling Kick,,Ember,,Moves
+,,,,U-turn,,Wing Attack,,,,Fury Swipes,,Shock Wave,,Return,,
+,,,,,,Secret Power,,,,U-turn,,Swift,,Karate Chop,,
+,,,,,,Protect,,,,,,Thunder Wave,,Rock Smash,,
+,,,,,,,,,,,,,,,,
+,,,,Youngster Dallas,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 9 Charmander ♂,,Lv 9 Totodile ♂,,Lv 9 Treecko ♂,,Lv 10 Whismur ♂,,,,,,Pokémon
+,,,,Modest,Blaze,Hardy,Torrent,Careful,Overgrow,Rash,Scrappy,,,,,Nature/Abillity
+,AI Flags:,,,Charcoal,,Mystic Water,,Miracle Seed,,Silk Scarf,,,,,,Item
+,,,,Charm,,Dragon Dance,,Mega Drain,,Uproar,,,,,,Moves
+,,,,Ember,,Aqua Jet,,Bite,,Sleep Talk,,,,,,
+,,,,Metal Claw,,Bite,,Quick Attack,,Water Pulse,,,,,,
+,,,,Bite,,Scratch,,Rock Smash,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Youngster Michael,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 9 Chikorita ♂,,Lv 9 Torchic ♂,,Lv 9 Squirtle ♂,,Lv 10 Rattata ♂,,,,,,Pokémon
+,,,,Careful,Overgrow,Modest,Blaze,Relaxed,Shell Armor,Careful,Guts,,,,,Nature/Abillity
+,AI Flags:,,,Light Clay,,Charcoal,,Mystic Water,,Flame Orb,,,,,,Item
+,,,,Tackle,,Pound,,Tackle,,Protect,,,,,,Moves
+,,,,Razor Leaf,,Ember,,Water Gun,,Quick Attack,,,,,,
+,,,,Light Screen,,Rock Smash,,Bite,,Bite,,,,,,
+,,,,Reflect,,Pluck,,Mirror Coat,,Hyper Fang,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Bug Catcher Sebastian,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 12 Burmy-Sandy ♂,,Lv 12 Cascoon ♂,,Lv 12 Silcoon ♂,,Lv 12 Kakuna ♂,,Lv 12 Metapod ♂,,,,Pokémon
+,,,,Bold,Snow Cloak,Bold,Shed Skin,Bold,Shed Skin,Naughty,Shed Skin,Careful,Shed Skin,,,Nature/Abillity
+,AI Flags:,,,Berry Juice,,Berry Juice,,Berry Juice,,Berry Juice,,Berry Juice,,,,Item
+,,,,HP Dark,,Iron Defense,,Iron Defense,,Iron Defense,,Iron Defense,,,,Moves
+,,,,Protect,,Poison Sting,,Tackle,,Poison Sting,,Tackle,,,,
+,,,,Snore,,Snore,,Snore,,Snore,,Snore,,,,
+,,,,Bug Bite,,Bug Bite,,Bug Bite,,Bug Bite,,Bug Bite,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lass Kaitlin,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 9 Snubbull ♀,,Lv 9 Growlithe ♂,,Lv 9 Electrike ♀,,Lv 10 Riolu ♂,,,,,,Pokémon
+,,,,Hardy,Intimidate,Lonely,Intimidate,Bashful,Lightning Rod,Sassy,Adaptability,,,,,Nature/Abillity
+,AI Flags:,,,Silk Scarf,,Expert Belt,,Rare Bone,,King's Rock,,,,,,Item
+,,,,Bite,,Bite,,ThunderShock,,SmellingSalt,,,,,,Moves
+,,,,Present,,Ember,,Bite,,Bullet Punch,,,,,,
+,,,,Attract,,Secret Power,,Swift,,Copycat,,,,,,
+,,,,Snore,,Sleep Talk,,Thunder Wave,,Rolling Kick,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lass Madeline,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 10 Mareep ♀,,Lv 9 Piplup ♂,,Lv 9 Chimchar ♂,,Lv 9 Turtwig ♂,,,,,,Pokémon
+,,,,Bashful,Static,Brave,Torrent,Relaxed,Blaze,Adamant,Overgrow,,,,,Nature/Abillity
+,AI Flags:,,,Magnet,,Mystic Water,,Charcoal,,Miracle Seed,,,,,,Item
+,,,,Shock Wave,,Aqua Jet,,Fake Out,,Razor Leaf,,,,,,Moves
+,,,,HP Ice,,Pluck,,Flame Wheel,,Rock Smash,,,,,,
+,,,,Thunder Wave,,Pound,,Rock Smash,,Reflect,,,,,,
+,,,,Power Gem,,Sleep Talk,,Grass Knot,,Pound,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Oreburgh Gate,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Camper Curtis,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 10 Teddiursa ♂,,Lv 10 Spoink ♂,,Lv 9 Sandshrew ♂,,Lv 9 Wingull ♂,,Lv 10 NidoranM ♂,,,,Pokémon
+,,,,Adamant,Guts,Docile,Thick Fat,Naive,Rough Skin,Modest,Gluttony,Lonely,Poison Point,,,Nature/Abillity
+,AI Flags:,,,Toxic Orb,,Life Orb,,Soft Sand,,Wacan Berry,,Poison Barb,,,,Item
+,,,,Lick,,Future Sight,,Earth Power,,Wing Attack,,Double Kick,,,,Moves
+,,,,SmellingSalt,,Teeter Dance,,Aerial Ace,,Water Gun,,Poison Jab,,,,
+,,,,Rock Smash,,Confusion,,Rock Throw,,Roost,,Bite,,,,
+,,,,Aerial Ace,,Bounce,,Slash,,SuperSonic,,Sleep Talk,,,,
+,,,,,,,,,,,,,,,,
+,,,,Picnicker Diana,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 10 Eevee ♂,,Lv 9 Chingling ♀,,Lv 9 Zubat ♀,,Lv 9 Ralts ♀,,Lv 10 NidoranF ♀,,,,Pokémon
+,,,,Lax,Adaptability,Careful,Levitate,Quiet,Inner Focus,Jolly,Trace,Naive,Poison Point,,,Nature/Abillity
+,AI Flags:,,,Silk Scarf,,TwistedSpoon,,Sharp Beak,,Custap Berry,,Zoom Lens,,,,Item
+,,,,Quick Attack,,Hypnosis,,Confuse Ray,,Destiny Bond,,Lovely Kiss,,,,Moves
+,,,,Secret Power,,Recover,,Wing Attack,,Confusion,,Sludge Bomb,,,,
+,,,,Snore,,Confusion,,Poison Fang,,Magical Leaf,,Double Kick,,,,
+,,,,Bite,,Swift,,Hypnosis,,Icy Wind,,Bite,,,,
+,,,,,,,,,,,,,,,,
+,,,,Oreburgh Mine,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Worker Mason (Gauntlet Start)*,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 11 Combee,,Lv 10 Phanpy ♂,,Lv 10 Geodude ♂,,Lv 12 Bidoof ♂,,,,,,Pokémon
+,,,,Bashful,Honey Gather,Impish,Dry Skin,Docile,Rock Head,Hasty,Simple,,,,,Nature/Abillity
+,AI Flags:,,,Silver Powder,,Muscle Band,,Passho Berry,,Berry Juice,,,,,,Item
+,,,,Tailwind,,Rollout,,SelfDestruct,,Curse,,,,,,Moves
+,,,,Bug Bite,,Ice Shard,,Rock Throw,,Rollout,,,,,,
+,,,,Mud Slap,,Bulldoze,,Sleep Talk,,Quick Attack,,,,,,
+,,,,Air Cutter,,Charm,,Rock Smash,,Aqua Jet,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Worker Colin (Gauntlet End)*,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 9 Dunsparce ♂,,Lv 11 Rhyhorn ♂,,Lv 11 Slugma ♂,,Lv 10 Machop ♂,,,,,,Pokémon
+,,,,Sassy,Serene Grace,Calm,Lightning Rod,Impish,Drought,Naughty,No Guard,,,,,Nature/Abillity
+,AI Flags:,,,Oran Berry,,Life Orb,,Cheri Berry,,(None),,,,,,Item
+,,,,Mud Slap,,Rock Slide,,Secret Power,,SmellingSalts,,,,,,Moves
+,,,,Glare,,Megahorn,,Ember,,Fire Punch,,,,,,
+,,,,Tackle,,Earthquake,,AncientPower,,Low Kick,,,,,,
+,,,,Sleep Talk,,Rock Polish,,Smog,,Rock Throw,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Oreburgh Gym (PERMANENT SANDSTORM),,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Scientist Jonathon,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 12 Aron ♂,,Lv 15 Machop ♂,,Lv 11 Omanyte ♂,,Lv 12 Anorith ♂,,Lv 12 Onix ♂,,,,Pokémon
+,,,,Modest,Rock Head,Serious,No Guard,Bashful,Swift Swim,Mild,Swift Swim,Lonely,Rock Head,,,Nature/Abillity
+,AI Flags:,,,Sitrus Berry,,Leftovers,,Shell Bell,,(None),,Sticky Barb,,,,Item
+,,,,Spikes,,Fissure,,Brine,,Bug Bite,,SelfDestruct,,,,Moves
+,,,,Sleep Talk,,Rock Throw,,Aurora Beam,,Aqua Jet,,Swagger,,,,
+,,,,,,Karate Chop,,Mud Shot,,Rock Throw,,Dig,,,,
+,,,,,,Sleep Talk,,Sleep Talk,,Aerial Ace,,Rock Throw,,,,
+,,,,,,,,,,,,,,,,
+,,,,Ruin Maniac Darius,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 11 Shieldon ♂,,Lv 12 Kabuto ♂,,Lv 11 Larvitar ♂,,Lv 11 Magby ♂,,Lv 12 Nosepass ♂,,,,Pokémon
+,,,,Bold,Solid Rock,Hardy,Swift Swim,Hardy,Guts,Quiet,Flame Body,Naughty,Solid Rock,,,Nature/Abillity
+,AI Flags:,,,Berry Juice,,Liechi Berry,,Toxic Orb,,Leftovers,,Lum Berry,,,,Item
+,,,,Metal Burst,,Aqua Jet,,Protect,,Mach Punch,,Attract,,,,Moves
+,,,,Sleep Talk,,Rollout,,Facade,,Flame Wheel,,Protect,,,,
+,,,,Toxic,,Sleep Talk,,Rollout,,Smog,,Toxic,,,,
+,,,,,,,,,,ThunderPunch,,Seismic Toss,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Leader Roark,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,Lv 15 Bonsly ♂,,Lv 13 Lileep ♂,,Lv 14 Gible ♂,,Lv 14 Corsola ♀,,Lv 13 Shuckle ♂,,Lv 16 Cranidos ♂,,Pokémon
+,,,,Impish,Rock Head,Naive,Solid Rock,Gentle,Sand Veil,Quirky,Solid Rock,Naive,Solid Rock,Adamant,Rock Head,Nature/Abillity
+,AI Flags:,,,Focus Sash,,Big Root,,Chesto Berry,,Rindo Berry,,Berry Juice,,Lum Berry,,Item
+,,,,Stealth Rock,,Sludge Bomb,,DragonBreath,,Recover,,Toxic,,Head Smash,,Moves
+,,,,SelfDestruct,,Giga Drain,,Flamethrower,,Water Pulse,,Rollout,,Zen Headbutt,,
+,,,,Brick Break,,AncientPower,,Thunder Fang,,Light Screen,,Curse,,Crunch,,
+,,,,Rollout,,Recover,,Earth Power,,Rollout,,Sand Tomb,,Rock Polish,,

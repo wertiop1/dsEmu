@@ -1,0 +1,26 @@
+{
+  "splits": [
+    {
+      "id": "roark",
+      "name": "Roark Split",
+      "description": "Early-game trainers leading up to Roark. Edit this file to add routes, trainers, and notes.",
+      "sections": [
+        {
+          "title": "Pre-Roark Routes",
+          "trainers": []
+        }
+      ]
+    },
+    {
+      "id": "gardenia",
+      "name": "Gardenia Split",
+      "description": "Mid-early trainers leading up to Gardenia. Edit this file to add routes, trainers, and notes.",
+      "sections": [
+        {
+          "title": "Eterna Area",
+          "trainers": []
+        }
+      ]
+    }
+  ]
+}
